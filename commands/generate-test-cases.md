@@ -1,63 +1,105 @@
-# Generate Banking API Test Cases
+# Generate Test Cases — Universal Template
 
 ## Purpose
-Reusable prompt for generating API test cases that focus on business-critical banking flows.
-
-## Prompt Template
-Use this template to generate practical test cases for banking APIs. Include only specific scenarios with a clear risk level, expected result, and business impact.
+Reusable prompt template for generating structured test cases for any domain.
+Replace the variables in `## Context` before using.
 
 ---
 
-You are generating API test cases for a banking system that supports:
-- authentication
-- balance inquiry
-- money transfer
-- transaction status
+## How to use
 
-Prioritize business-critical scenarios and avoid generic cases.
+1. Fill in the `## Context` section with your system details
+2. Paste the full prompt into Claude
+3. Get structured, risk-prioritized test cases ready for Jira, TestRail or your `.feature` files
 
-For each test case, provide:
-- Test title
-- Scenario type: Positive, Negative, or Edge
-- Risk level: P0, P1, or P2
-- Expected result
-- Business impact
-- Minimal request and response focus
+---
 
-### Context and priorities
-- Focus on safe, consistent, reliable money movement
-- Protect against duplicate transactions, incorrect balances, unauthorized access, and inconsistent states
-- Validate authentication, input rules, amount limits, account state, and status codes
-- Prefer cases that exercise end-to-end business behavior
+## Context (edit before use)
 
-### Output format
+```
+SYSTEM_NAME: Banking API
+DOMAIN: Fintech / Payments
+FEATURES_UNDER_TEST:
+  - Authentication
+  - Balance inquiry
+  - Money transfer
+  - Transaction status
+
+BUSINESS_GOAL: Ensure safe, consistent, and reliable money movement
+
+CRITICAL_FLOWS:
+  1. Login
+  2. Check balance
+  3. Transfer money
+  4. Validate transaction
+
+MAIN_RISKS:
+  - Duplicate transactions
+  - Incorrect balances
+  - Unauthorized access
+  - Inconsistent transaction states
+  - Slow responses in critical flows
+```
+
+---
+
+## Prompt Template
+
+```
+You are a QA Analyst generating test cases for the following system:
+
+System: {{SYSTEM_NAME}}
+Domain: {{DOMAIN}}
+Business goal: {{BUSINESS_GOAL}}
+
+Features under test:
+{{FEATURES_UNDER_TEST}}
+
+Critical flows:
+{{CRITICAL_FLOWS}}
+
+Main risks to cover:
+{{MAIN_RISKS}}
+
+---
+
+Rules:
+- Prioritize business-critical scenarios
+- Avoid generic or abstract test ideas
+- Include at least 8 test cases
+- Cover at least one Positive, one Negative, and one Edge case
+- Assign risk level: P0 (critical), P1 (high), P2 (medium)
+- Use concrete, domain-specific behavior
+
+Output format for each test case:
+
 1. Title: ...
-   - Type: Positive/Negative/Edge
-   - Risk: P0/P1/P2
+   - Type: Positive | Negative | Edge
+   - Risk: P0 | P1 | P2
    - Scenario: ...
    - Expected result: ...
    - Business impact: ...
-   - Notes: ...
+   - Notes: (optional)
 
-### Example scenarios to cover
-- Successful transfer with sufficient balance
-- Invalid token or missing auth header
-- Insufficient funds
-- Duplicate transaction retry with same idempotency key
-- Self-transfer rejection
-- Transfer exact available balance
-- Closed or frozen account
-- Pending transaction status after timeout
-- Input validation for amount and account IDs
-- Concurrent transfer conflict
-
-### Requirements
-- Include at least 8 test cases
-- Include at least one Positive, one Negative, and one Edge case
-- Do not include abstract or generic test ideas like "verify all error codes"
-- Use concrete business behavior from banking context
-- Include expected HTTP status codes when relevant
+Generate the test cases now.
+```
 
 ---
 
-Generate the test cases now.
+## Examples by domain
+
+| Domain | System name | Key risks |
+|---|---|---|
+| Fintech | Banking API | Duplicate tx, incorrect balance, unauthorized access |
+| Ecommerce | Checkout flow | Double charge, stock race condition, coupon abuse |
+| Auth | Login / Register | Brute force, token expiry, session hijack |
+| UI | Registration form | Empty fields, invalid email, password mismatch |
+
+---
+
+## Changelog
+
+| Date | Change |
+|---|---|
+| 2026-04-16 | Refactored from banking-specific to universal parametrizable template |
+| original | Banking API context — `generate-test-cases.md` |
